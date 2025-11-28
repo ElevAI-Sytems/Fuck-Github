@@ -3,8 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Your Appointment</title>
+    <title>Nail Salon Booking</title>
+    <meta name="description" content="Book your nail salon appointment online.">
     <style>
+        :root {
+            --bg: #f5f5f5;
+            --card-bg: #ffffff;
+            --border: #dcdcdc;
+            --border-focus: #111827;
+            --text-main: #111827;
+            --text-muted: #6b7280;
+            --accent: #111827;
+            --error-bg: #fef2f2;
+            --error-border: #fecaca;
+            --error-text: #b91c1c;
+            --success-bg: #ecfdf3;
+            --success-border: #bbf7d0;
+            --success-text: #14532d;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,312 +29,402 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 16px;
         }
 
-        .container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-width: 500px;
+        .page-wrapper {
             width: 100%;
-            padding: 40px;
-            animation: slideUp 0.5s ease;
+            max-width: 520px;
         }
 
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 24px 20px;
+        }
+
+        @media (min-width: 640px) {
+            .card {
+                padding: 28px 28px;
             }
         }
 
         .header {
-            text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
-        .header h1 {
-            color: #667eea;
-            font-size: 28px;
-            margin-bottom: 10px;
+        .title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 4px;
         }
 
-        .header p {
-            color: #666;
-            font-size: 15px;
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .message {
+            border-radius: 8px;
+            padding: 12px 12px;
+            font-size: 14px;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .message.success {
+            background: var(--success-bg);
+            border: 1px solid var(--success-border);
+            color: var(--success-text);
+        }
+
+        .message.error {
+            background: var(--error-bg);
+            border: 1px solid var(--error-border);
+            color: var(--error-text);
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 14px;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: var(--text-main);
         }
 
-        input, select {
+        .required {
+            color: #dc2626;
+        }
+
+        input,
+        select {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
+            padding: 10px 12px;
             border-radius: 8px;
+            border: 1px solid var(--border);
             font-size: 14px;
-            transition: border-color 0.3s;
             font-family: inherit;
+            background-color: #f9fafb;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
         }
 
-        input:focus, select:focus {
+        input:focus,
+        select:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: var(--border-focus);
+            background-color: #ffffff;
+            box-shadow: 0 0 0 1px var(--border-focus);
+        }
+
+        input::placeholder {
+            color: #9ca3af;
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .row .col {
+            flex: 1;
+        }
+
+        @media (max-width: 480px) {
+            .row {
+                flex-direction: column;
+            }
         }
 
         .btn {
             width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
             margin-top: 10px;
+            padding: 11px 14px;
+            border-radius: 9999px;
+            border: none;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            background-color: var(--accent);
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background-color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            background-color: #020617;
+            box-shadow: 0 8px 16px rgba(15, 23, 42, 0.18);
+            transform: translateY(-1px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: none;
         }
 
         .btn:disabled {
-            background: #ccc;
+            opacity: 0.65;
             cursor: not-allowed;
+            box-shadow: none;
             transform: none;
         }
 
-        .message {
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: none;
-            animation: slideDown 0.3s ease;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .message.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        .message.show {
-            display: block;
-        }
-
         .loading-spinner {
-            display: inline-block;
             width: 14px;
             height: 14px;
+            border-radius: 999px;
             border: 2px solid #ffffff;
-            border-radius: 50%;
             border-top-color: transparent;
-            animation: spin 0.8s linear infinite;
-            margin-right: 8px;
-            vertical-align: middle;
+            animation: spin 0.7s linear infinite;
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
-        @media (max-width: 600px) {
-            .container {
-                padding: 30px 20px;
-            }
+        .helper-text {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
 
-            .header h1 {
-                font-size: 24px;
-            }
+        .footer-note {
+            margin-top: 12px;
+            font-size: 11px;
+            color: var(--text-muted);
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>💅 Book Your Appointment</h1>
-            <p>Fill out the form below to schedule your visit</p>
+    <div class="page-wrapper">
+        <div class="card">
+            <div class="header">
+                <h1 class="title">Book an appointment</h1>
+                <p class="subtitle">Fill in your details and we’ll confirm your booking by SMS or email.</p>
+            </div>
+
+            <div id="message" class="message"></div>
+
+            <form id="bookingForm" novalidate>
+                <div class="form-group">
+                    <label for="customerName">Full name <span class="required">*</span></label>
+                    <input
+                        type="text"
+                        id="customerName"
+                        name="customerName"
+                        autocomplete="name"
+                        placeholder="e.g. Sarah Ahmed"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="customerEmail">Email address <span class="required">*</span></label>
+                    <input
+                        type="email"
+                        id="customerEmail"
+                        name="customerEmail"
+                        autocomplete="email"
+                        placeholder="name@example.com"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="customerPhone">Mobile number <span class="required">*</span></label>
+                    <input
+                        type="tel"
+                        id="customerPhone"
+                        name="customerPhone"
+                        autocomplete="tel"
+                        placeholder="+44 7..."
+                        required
+                    >
+                    <p class="helper-text">We’ll only use this to confirm and remind you about your booking.</p>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col">
+                        <label for="appointmentDate">Date <span class="required">*</span></label>
+                        <input
+                            type="date"
+                            id="appointmentDate"
+                            name="appointmentDate"
+                            required
+                        >
+                    </div>
+                    <div class="form-group col">
+                        <label for="appointmentTime">Time <span class="required">*</span></label>
+                        <select id="appointmentTime" name="appointmentTime" required>
+                            <option value="">Select time</option>
+                            <option value="09:00">09:00</option>
+                            <option value="09:30">09:30</option>
+                            <option value="10:00">10:00</option>
+                            <option value="10:30">10:30</option>
+                            <option value="11:00">11:00</option>
+                            <option value="11:30">11:30</option>
+                            <option value="12:00">12:00</option>
+                            <option value="12:30">12:30</option>
+                            <option value="13:00">13:00</option>
+                            <option value="13:30">13:30</option>
+                            <option value="14:00">14:00</option>
+                            <option value="14:30">14:30</option>
+                            <option value="15:00">15:00</option>
+                            <option value="15:30">15:30</option>
+                            <option value="16:00">16:00</option>
+                            <option value="16:30">16:30</option>
+                            <option value="17:00">17:00</option>
+                            <option value="17:30">17:30</option>
+                            <option value="18:00">18:00</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="serviceType">Service <span class="required">*</span></label>
+                    <select id="serviceType" name="serviceType" required>
+                        <option value="">Select a service</option>
+                        <option value="Manicure">Manicure</option>
+                        <option value="Pedicure">Pedicure</option>
+                        <option value="Gel Manicure">Gel manicure</option>
+                        <option value="Gel Pedicure">Gel pedicure</option>
+                        <option value="Acrylic Full Set">Acrylic full set</option>
+                        <option value="Acrylic Fill">Acrylic infill</option>
+                        <option value="Nail Art">Nail art</option>
+                        <option value="Mani + Pedi Combo">Manicure &amp; pedicure combo</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn" id="submitBtn">
+                    <span id="btnSpinner" class="loading-spinner" style="display:none;"></span>
+                    <span id="btnText">Confirm booking</span>
+                </button>
+
+                <p class="footer-note">
+                    By submitting this form you agree to be contacted about your appointment.
+                </p>
+            </form>
         </div>
-
-        <div id="message" class="message"></div>
-
-        <form id="bookingForm">
-            <div class="form-group">
-                <label for="customerName">Full Name *</label>
-                <input type="text" id="customerName" name="customerName" required placeholder="John Smith">
-            </div>
-
-            <div class="form-group">
-                <label for="customerEmail">Email Address *</label>
-                <input type="email" id="customerEmail" name="customerEmail" required placeholder="john@example.com">
-            </div>
-
-            <div class="form-group">
-                <label for="customerPhone">Phone Number *</label>
-                <input type="tel" id="customerPhone" name="customerPhone" required placeholder="+44 7XXX XXXXXX">
-            </div>
-
-            <div class="form-group">
-                <label for="appointmentDate">Appointment Date *</label>
-                <input type="date" id="appointmentDate" name="appointmentDate" required>
-            </div>
-
-            <div class="form-group">
-                <label for="appointmentTime">Appointment Time *</label>
-                <select id="appointmentTime" name="appointmentTime" required>
-                    <option value="">Select a time...</option>
-                    <option value="09:00">9:00 AM</option>
-                    <option value="09:30">9:30 AM</option>
-                    <option value="10:00">10:00 AM</option>
-                    <option value="10:30">10:30 AM</option>
-                    <option value="11:00">11:00 AM</option>
-                    <option value="11:30">11:30 AM</option>
-                    <option value="12:00">12:00 PM</option>
-                    <option value="12:30">12:30 PM</option>
-                    <option value="13:00">1:00 PM</option>
-                    <option value="13:30">1:30 PM</option>
-                    <option value="14:00">2:00 PM</option>
-                    <option value="14:30">2:30 PM</option>
-                    <option value="15:00">3:00 PM</option>
-                    <option value="15:30">3:30 PM</option>
-                    <option value="16:00">4:00 PM</option>
-                    <option value="16:30">4:30 PM</option>
-                    <option value="17:00">5:00 PM</option>
-                    <option value="17:30">5:30 PM</option>
-                    <option value="18:00">6:00 PM</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="serviceType">Service Type *</label>
-                <select id="serviceType" name="serviceType" required>
-                    <option value="">Select a service...</option>
-                    <option value="💅 Classic Manicure">💅 Classic Manicure</option>
-                    <option value="✨ Gel Manicure">✨ Gel Manicure</option>
-                    <option value="🦶 Classic Pedicure">🦶 Classic Pedicure</option>
-                    <option value="💎 Gel Pedicure">💎 Gel Pedicure</option>
-                    <option value="🌟 Mani + Pedi Combo">🌟 Mani + Pedi Combo</option>
-                    <option value="💖 Acrylic Full Set">💖 Acrylic Full Set</option>
-                    <option value="✨ Acrylic Fill">✨ Acrylic Fill</option>
-                    <option value="🎨 Nail Art">🎨 Nail Art</option>
-                </select>
-            </div>
-
-            <button type="submit" class="btn" id="submitBtn">
-                <span id="btnText">Book Appointment</span>
-            </button>
-        </form>
     </div>
 
     <script>
-        (function() {
-            'use strict';
+        (function () {
+            "use strict";
 
-            var today = new Date().toISOString().split('T')[0];
-            document.getElementById('appointmentDate').setAttribute('min', today);
+            var form = document.getElementById("bookingForm");
+            var submitBtn = document.getElementById("submitBtn");
+            var btnText = document.getElementById("btnText");
+            var btnSpinner = document.getElementById("btnSpinner");
+            var messageDiv = document.getElementById("message");
 
-            document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            // Set minimum date to today
+            var today = new Date().toISOString().split("T")[0];
+            document
+                .getElementById("appointmentDate")
+                .setAttribute("min", today);
+
+            function showMessage(type, html) {
+                messageDiv.className = "message " + type;
+                messageDiv.innerHTML = html;
+                messageDiv.style.display = "block";
+                messageDiv.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+
+            function setLoading(isLoading) {
+                if (isLoading) {
+                    submitBtn.disabled = true;
+                    btnSpinner.style.display = "inline-block";
+                    btnText.textContent = "Booking...";
+                } else {
+                    submitBtn.disabled = false;
+                    btnSpinner.style.display = "none";
+                    btnText.textContent = "Confirm booking";
+                }
+            }
+
+            form.addEventListener("submit", function (e) {
                 e.preventDefault();
 
-                var submitBtn = document.getElementById('submitBtn');
-                var btnText = document.getElementById('btnText');
-                var messageDiv = document.getElementById('message');
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                }
 
-                submitBtn.disabled = true;
-                btnText.innerHTML = '<span class="loading-spinner"></span>Booking...';
-                messageDiv.className = 'message';
+                setLoading(true);
+                messageDiv.style.display = "none";
 
                 var formData = {
-                    customerName: document.getElementById('customerName').value,
-                    customerEmail: document.getElementById('customerEmail').value,
-                    customerPhone: document.getElementById('customerPhone').value,
-                    appointmentDate: document.getElementById('appointmentDate').value,
-                    appointmentTime: document.getElementById('appointmentTime').value,
-                    serviceType: document.getElementById('serviceType').value
+                    customerName: form.customerName.value.trim(),
+                    customerEmail: form.customerEmail.value.trim(),
+                    customerPhone: form.customerPhone.value.trim(),
+                    appointmentDate: form.appointmentDate.value,
+                    appointmentTime: form.appointmentTime.value,
+                    serviceType: form.serviceType.value
                 };
 
-                var webhookUrl = 'https://elev0ai.app.n8n.cloud/webhook/book-appointment';
+                var webhookUrl = "https://elev0ai.app.n8n.cloud/webhook/book-appointment";
 
                 fetch(webhookUrl, {
-                    method: 'POST',
+                    method: "POST",
                     headers: {
-                        'Content-Type': 'application/json',
+                        "Content-Type": "application/json"
                     },
                     body: JSON.stringify(formData)
                 })
-                .then(function(response) {
-                    return response.json().then(function(data) {
-                        return {
-                            ok: response.ok,
-                            status: response.status,
-                            data: data
-                        };
-                    });
+                .then(function (response) {
+                    var isOk = response.ok;
+                    return response
+                        .json()
+                        .catch(function () { return {}; })
+                        .then(function (data) {
+                            return { ok: isOk, status: response.status, data: data };
+                        });
                 })
-                .then(function(result) {
-                    if (result.ok && result.data.success) {
-                        messageDiv.className = 'message success show';
-                        messageDiv.innerHTML = 
-                            '✅ <strong>Booking Confirmed!</strong><br>' +
-                            'Booking ID: ' + result.data.bookingId + '<br>' +
-                            'Check your email and phone for confirmation.';
-                        
-                        document.getElementById('bookingForm').reset();
+                .then(function (result) {
+                    if (result.ok && result.data && result.data.success) {
+                        var bookingId = result.data.bookingId || "N/A";
+                        showMessage(
+                            "success",
+                            "<strong>Booking confirmed.</strong><br>" +
+                            "Your appointment is booked for " +
+                            formData.appointmentDate +
+                            " at " +
+                            formData.appointmentTime +
+                            ".<br>Booking ID: <strong>" +
+                            bookingId +
+                            "</strong>."
+                        );
+                        form.reset();
                     } else {
-                        throw new Error(result.data.message || 'Booking failed');
+                        var msg =
+                            (result.data && (result.data.message || result.data.error)) ||
+                            "Booking could not be completed. Please try again.";
+                        showMessage("error", "<strong>There was a problem.</strong><br>" + msg);
                     }
                 })
-                .catch(function(error) {
-                    messageDiv.className = 'message error show';
-                    messageDiv.innerHTML = 
-                        '❌ <strong>Booking Failed</strong><br>' +
-                        error.message + '<br>' +
-                        'Please try again or contact us directly.';
+                .catch(function () {
+                    showMessage(
+                        "error",
+                        "<strong>Connection error.</strong><br>Please check your internet and try again."
+                    );
                 })
-                .finally(function() {
-                    submitBtn.disabled = false;
-                    btnText.textContent = 'Book Appointment';
-                    messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                .finally(function () {
+                    setLoading(false);
                 });
             });
         })();
